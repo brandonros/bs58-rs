@@ -345,6 +345,11 @@ impl<'a, I: AsRef<[u8]>> EncodeBuilder<'a, I> {
         output
     }
 
+    /// Encode into the given buffer.
+    pub fn onto_slice_unsafe(self, output: &mut [u8]) -> Result<usize> {
+        encode_into_limbs(self.input.as_ref(), output, self.alpha)
+    }
+
     /// Encode onto the given buffer.
     ///
     /// Returns the length written onto the buffer.
