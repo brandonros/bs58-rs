@@ -549,22 +549,22 @@ fn encode_into_limbs(input: &[u8], output: &mut [u8], alpha: &Alphabet) -> Resul
     // rescale for the remainder
     index = index * 5;
     {
-    let output = &mut output[prefix_len..];
-    while index > 0 && output[index - 1] == 0 {
-        index -= 1;
-    }
+        let output = &mut output[prefix_len..];
+        while index > 0 && output[index - 1] == 0 {
+            index -= 1;
+        }
 
-    for _ in input.into_iter().take_while(|v| **v == 0) {
-        let byte = output.get_mut(index).ok_or(Error::BufferTooSmall)?;
-        *byte = 0;
-        index += 1;
-    }
+        for _ in input.into_iter().take_while(|v| **v == 0) {
+            let byte = output.get_mut(index).ok_or(Error::BufferTooSmall)?;
+            *byte = 0;
+            index += 1;
+        }
 
-    for val in &mut output[..index] {
-        *val = alpha.encode[*val as usize];
-    }
+        for val in &mut output[..index] {
+            *val = alpha.encode[*val as usize];
+        }
 
-    output[..index].reverse();
+        output[..index].reverse();
     }
 
     if prefix_len > 0 {
